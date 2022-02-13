@@ -1,7 +1,6 @@
 package main
 
 import (
-	"booking-app-golang/shared"
 	"fmt" // format package from Go
 	"strings"
 )
@@ -29,7 +28,7 @@ func main() {
 
 		firstName, lastName, email, userTickets := getUserInput()
 
-		isValidName, isValidEmail, isValidTicketNum := shared.ValidationInputs(firstName, lastName, email, userTickets, remainingTickets)
+		isValidName, isValidEmail, isValidTicketNum := validationInputs(firstName, lastName, email, userTickets, remainingTickets)
 		if isValidName && isValidEmail && isValidTicketNum {
 
 			// check details of slice
