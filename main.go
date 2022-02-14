@@ -41,8 +41,18 @@ func main() {
 			// fmt.Printf("the Slice type: %T \n", bookings)
 			// fmt.Printf("length of Slice: %v \n", len(bookings))
 
+			var soldTicketNum = conferanceTickets - remainingTickets
+			//call bookTick function
 			bookTicket(userTickets, firstName, lastName, email)
 
+			for i := 0; i < userTickets; i++ {
+				fmt.Printf("************* Ticket Number%v *************\n", (soldTicketNum - i - 1))
+				// call sendTicket function
+				sendTicket(userTickets, firstName, lastName, email)
+
+			}
+
+			// use getFirstNames()
 			var firstNames = getFirstNames()
 			fmt.Printf("The first names of bookings are: %v\n", firstNames)
 
@@ -77,6 +87,8 @@ func greetUsers() {
 
 func getFirstNames() []string {
 	firstNamesSlice := []string{}
+
+	// works like for each loop
 	for _, booking := range bookings {
 		firstNamesSlice = append(firstNamesSlice, booking.firstName)
 	}
@@ -124,4 +136,11 @@ func bookTicket(userTickets int, firstName string, lastName string, email string
 
 	fmt.Printf("Thank you %v %v for booking %v tickets.\nYou will receive a confirmation email at %v \n", firstName, lastName, userTickets, email)
 	fmt.Printf("%v tickets are still available\n", remainingTickets)
+}
+
+func sendTicket(userTickets int, firstName string, lastName string, email string) {
+	var ticket = fmt.Sprintf("%v tickets for %v %v", userTickets, firstName, lastName)
+	fmt.Printf("*****************************************\n")
+	fmt.Printf("Sending the ticket:\n %v \n to email address %v\n", ticket, email)
+	fmt.Printf("*****************************************\n")
 }
