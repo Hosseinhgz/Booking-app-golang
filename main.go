@@ -1,9 +1,6 @@
 package main
 
-import (
-	"fmt" // format package from Go
-	"strings"
-)
+import "fmt" // format package from Go
 
 // package level Variables (global variables)
 var conferenceName = "Go conferance"
@@ -11,7 +8,14 @@ var conferenceName = "Go conferance"
 const conferanceTickets = 50  //cant change the value
 var remainingTickets int = 50 // int used for positive int
 //define slice
-var bookings = []string{}
+var bookings = make([]UserData, 0)
+
+type UserData struct {
+	firstName     string
+	lastName      string
+	email         string
+	ticketsNumber int
+}
 
 func main() {
 
@@ -74,8 +78,7 @@ func greetUsers() {
 func getFirstNames() []string {
 	firstNamesSlice := []string{}
 	for _, booking := range bookings {
-		var fullName = strings.Fields(booking)
-		firstNamesSlice = append(firstNamesSlice, fullName[0])
+		firstNamesSlice = append(firstNamesSlice, booking.firstName)
 	}
 	return firstNamesSlice
 }
@@ -107,7 +110,17 @@ func getUserInput() (string, string, string, int) {
 
 func bookTicket(userTickets int, firstName string, lastName string, email string) {
 	remainingTickets = remainingTickets - userTickets
-	bookings = append(bookings, firstName+" "+lastName+",")
+
+	// create a object from UserData struct f
+	var userData = UserData{
+		firstName:     firstName,
+		lastName:      lastName,
+		email:         email,
+		ticketsNumber: userTickets,
+	}
+
+	bookings = append(bookings, userData)
+	fmt.Printf("list of bookings is :%v\n", bookings)
 
 	fmt.Printf("Thank you %v %v for booking %v tickets.\nYou will receive a confirmation email at %v \n", firstName, lastName, userTickets, email)
 	fmt.Printf("%v tickets are still available\n", remainingTickets)
