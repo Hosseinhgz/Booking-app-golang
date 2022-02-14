@@ -1,6 +1,9 @@
 package main
 
-import "fmt" // format package from Go
+import (
+	"fmt" // format package from Go
+	"time"
+)
 
 // package level Variables (global variables)
 var conferenceName = "Go conferance"
@@ -17,17 +20,20 @@ type UserData struct {
 	ticketsNumber int
 }
 
+// wg - When there is no loop to wait 1/4
+//var wg = sync.WaitGroup{}
+
 func main() {
+	// Main
 
 	// this function is greet to the users
 	greetUsers()
 
-	// define array 3 methods
-	// var bookings []string // [50]string is type of this array
-	// var bookings = [50]string{}
+	// define array
+	// var bookings []string
 	// var bookings = [50]string{"Hossein", "Jack"}
 
-	// infinite loop
+	// Main loop of the Project
 	for {
 
 		firstName, lastName, email, userTickets := getUserInput()
@@ -45,12 +51,11 @@ func main() {
 			//call bookTick function
 			bookTicket(userTickets, firstName, lastName, email)
 
-			for i := 0; i < userTickets; i++ {
-				fmt.Printf("************* Ticket Number%v *************\n", (soldTicketNum - i - 1))
-				// call sendTicket function
-				sendTicket(userTickets, firstName, lastName, email)
+			// wg - When there is no loop to wait 2/4
+			// wg.Add(1)
 
-			}
+			// call sendTicket function
+			go sendTicket(userTickets, firstName, lastName, email, soldTicketNum)
 
 			// use getFirstNames()
 			var firstNames = getFirstNames()
@@ -75,14 +80,15 @@ func main() {
 			}
 		}
 	}
+	// wg - When there is no loop to wait 3/4
+	// wg.Wait()
 }
 
 func greetUsers() {
-	fmt.Printf("conferanceName var is %T, conferanceTickets var is %T, remainingTickets var is %T \n", conferanceTickets, conferenceName, remainingTickets)
-	// Main
-	fmt.Printf("Welcome to %v booking application\n", conferenceName)
-	fmt.Printf("We have total of %v tickets, and %v are still available!\n", conferanceTickets, remainingTickets)
-	fmt.Println("GET YOUR TICKET FROM HERE")
+	// fmt.Printf("*conferanceName var is %T, conferanceTickets var is %T, remainingTickets var is %T *\n", conferanceTickets, conferenceName, remainingTickets)
+	fmt.Printf("######## Welcome to %v booking application ########\n", conferenceName)
+	fmt.Printf("## We have total of %v tickets, and %v are still available ##\n", conferanceTickets, remainingTickets)
+	fmt.Println("################# GET YOUR TICKET FROM HERE #################")
 }
 
 func getFirstNames() []string {
@@ -105,16 +111,16 @@ func getUserInput() (string, string, string, int) {
 	// IMP - print the the memory location of that variable
 	//fmt.Println(&remainingTickets)
 
-	fmt.Println("Enter your First Name:")
+	fmt.Println("#Enter your First Name:")
 	fmt.Scan(&firstName)
 
-	fmt.Println("Enter your Last Name:")
+	fmt.Println("#Enter your Last Name?:")
 	fmt.Scan(&lastName)
 
-	fmt.Println("Enter your email address")
+	fmt.Println("#Enter your email address:")
 	fmt.Scan(&email)
 
-	fmt.Println("Enter number of tickets:")
+	fmt.Println("#Enter number of tickets:")
 	fmt.Scan(&userTickets)
 
 	return firstName, lastName, email, userTickets
@@ -138,9 +144,16 @@ func bookTicket(userTickets int, firstName string, lastName string, email string
 	fmt.Printf("%v tickets are still available\n", remainingTickets)
 }
 
-func sendTicket(userTickets int, firstName string, lastName string, email string) {
-	var ticket = fmt.Sprintf("%v tickets for %v %v", userTickets, firstName, lastName)
-	fmt.Printf("*****************************************\n")
-	fmt.Printf("Sending the ticket:\n %v \n to email address %v\n", ticket, email)
-	fmt.Printf("*****************************************\n")
+func sendTicket(userTickets int, firstName string, lastName string, email string, soldTicketNum int) {
+	time.Sleep(10 * time.Second)
+	for i := 0; i < userTickets; i++ {
+		fmt.Printf("************* Ticket Number %v ************\n", (soldTicketNum + i + 1))
+		var ticket = fmt.Sprintf("ticket number %v for %v %v", i+1, firstName, lastName)
+		fmt.Printf("*******************************************\n")
+		fmt.Printf("Sending the ticket:\n %v \n to email address %v\n", ticket, email)
+		fmt.Printf("*******************************************\n")
+
+	}
+	// wg - When there is no loop to wait 4/4
+	// wg.Done()
 }
