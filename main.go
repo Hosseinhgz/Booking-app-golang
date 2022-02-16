@@ -10,7 +10,8 @@ var conferenceName = "Go conferance"
 
 const conferanceTickets = 50  //cant change the value
 var remainingTickets int = 50 // int used for positive int
-//define slice
+
+//define slice of struct 0 is inisial length
 var bookings = make([]UserData, 0)
 
 type UserData struct {
@@ -39,6 +40,7 @@ func main() {
 		firstName, lastName, email, userTickets := getUserInput()
 
 		isValidName, isValidEmail, isValidTicketNum := validationInputs(firstName, lastName, email, userTickets, remainingTickets)
+
 		if isValidName && isValidEmail && isValidTicketNum {
 
 			// check details of slice
