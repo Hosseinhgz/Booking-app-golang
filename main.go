@@ -11,9 +11,10 @@ var conferenceName = "Go conferance"
 const conferanceTickets = 50  //cant change the value
 var remainingTickets int = 50 // int used for positive int
 
-//define slice of struct 0 is inisial length
+//define slice of struct - 0 is inisial length
 var bookings = make([]UserData, 0)
 
+// create UserData struct
 type UserData struct {
 	firstName     string
 	lastName      string
